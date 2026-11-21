@@ -195,24 +195,30 @@ This implementation roadmap outlines the structured, milestone-driven execution 
   - Viewport-adaptive responsive CSS with safe-area insets (`env(safe-area-inset-top)` etc.), flex wrap bars, and fluid typography.
   - Dedicated media query tiers: `<= 768px` (mobile/tablet), `<= 480px` (standard mobile), `<= 360px` (ultra-compact 320px), and `<= 600px` height (landscape layout).
   - Single-file `QualityManager` and `PerformanceMonitor` modules inside `index.html`.
-  - In-memory `imageCache = new Map()` in `QuestionEngine` with `preloadNextQuestion(nextIdx)`.
+  - Dynamic Three.js starfield reconstruction with geometry/material disposal on quality tier change.
+  - In-memory `imageCache = new Map()` in `QuestionEngine` with `preloadNextQuestion(nextIdx)` and late-response race condition protection (`loadRequestId`).
   - Shared `safeNavigate()` debounce wrapper for navigation CTAs.
-  - Automated CDP verification suite `scratch/verify_phase07.js` testing 9 viewports across 10 screens.
+  - Automated CDP verification suites `scratch/verify_phase07.js` and `scratch/verify_phase07_closure.js`.
+  - Deep provenance verification audit `scratch/audit_provenance.js` querying Wikimedia Commons API for all 20 dataset items.
   - Visual verification screenshots captured:
     - `scratch/phase07_01_mobile_320x568_gameplay.png`
     - `scratch/phase07_02_tablet_768x1024_planet_select.png`
     - `scratch/phase07_03_desktop_perf_monitor.png`
+    - `scratch/phase07_closure_01_desktop_perf.png`
+    - `scratch/phase07_closure_02_mobile_touch.png`
+    - `scratch/phase07_closure_03_all_clear_victory.png`
 - **Acceptance Criteria:**
   - [x] Zero horizontal scrolling or layout breakage across all 9 target viewports (`320×568`, `375×667`, `390×844`, `412×915`, `430×932`, `768×1024`, `1024×768`, `1366×768`, `1920×1080`).
   - [x] All 10 screens and modals verified: Welcome, Planet Selection, Mission Intro, Gameplay, Feedback Overlay (correct/supportive), Mission Completion, Game Completion, Audio Modal, Reset Modal.
   - [x] Child touch target ergonomics validated: primary action buttons `>= 64px` height (Welcome CTA: 69px, Answer buttons: 64px), secondary touch targets `>= 44px`.
   - [x] Touch safety CSS active: `-webkit-user-select: none`, `touch-action: manipulation`, `-webkit-tap-highlight-color: transparent`.
-  - [x] Adaptive Three.js quality system verified: `low` (max DPR 1.0, 400 stars), `medium` (max DPR 1.5, 750 stars), `high` (max DPR 2.0, 1300 stars).
-  - [x] Dynamic frame-drop downgrade verified: sustained low FPS (<28 FPS) auto-downgrades quality tier.
+  - [x] Adaptive Three.js quality system verified: `low` (max DPR 1.0, 400 stars), `medium` (max DPR 1.5, 750 stars), `high` (max DPR 2.0, 1300 stars). Scene graph star count dynamically updates with 0 geometry memory leaks.
+  - [x] Dynamic frame-drop downgrade verified: sustained low FPS (<28 FPS for 3s) auto-downgrades quality tier with hysteresis preventing loops.
   - [x] In-engine performance monitor verified: toggleable via query param `?debug=true`, keyboard shortcut `Alt+D`, or `SpaceDetective.togglePerformanceMonitor(true)`. Live metrics: FPS, frame time, draw calls (15), triangles (9,288), textures, geometries.
-  - [x] Page visibility handling verified: tab switching pauses loop and speech; clean resumption without delta spikes.
-  - [x] Image optimization verified: on-demand loading, verified SVG fallbacks, in-memory Map caching, and next-question preloading.
-  - [x] Rapid-tap / accidental double-click debounce verified: rapid 3x taps result in exactly 1 clean transition.
+  - [x] Page visibility handling verified: 10 consecutive hide/show cycles executed with 0 errors. AudioContext suspended/resumed safely, speech stopped on hide, clock delta reset without frame spikes.
+  - [x] Image optimization & race condition guard verified: on-demand loading, verified SVG fallbacks, in-memory Map caching, next-question preloading, and late response discard protection.
+  - [x] Rapid-tap / accidental double-click debounce verified: rapid 5x taps result in exactly 1 clean transition; locked planet click protection active.
+  - [x] Educational image provenance audit complete: all 20 entries verified via Wikimedia Commons API metadata (11 real photographs, 9 AI-generated images, 0 invalid, 0 needs review).
   - [x] 0 console errors during full automated suite execution across all test conditions.
 
 ---
