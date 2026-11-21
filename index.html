@@ -5035,10 +5035,20 @@
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     isPageVisible = false;
+                    if (animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                        animationFrameId = null;
+                    }
                     if (typeof SpeechManager !== 'undefined') SpeechManager.stop();
+                    if (typeof AudioManager !== 'undefined' && AudioManager.ctx && AudioManager.ctx.state === 'running') {
+                        AudioManager.ctx.suspend().catch(() => {});
+                    }
                 } else {
                     isPageVisible = true;
                     clock.getDelta(); // Discard accumulated time gap while tab was backgrounded
+                    if (typeof AudioManager !== 'undefined' && AudioManager.ctx && AudioManager.ctx.state === 'suspended') {
+                        AudioManager.ctx.resume().catch(() => {});
+                    }
                     if (!animationFrameId) {
                         animate();
                     }
@@ -5099,6 +5109,8 @@
                 speak: (text) => SpeechManager.speak(text),
                 stopSpeech: () => SpeechManager.stop(),
                 finishPlanetMission: () => QuestionEngine.finishPlanetMission(),
+                getStarCounts: () => starfieldGroup && starfieldGroup.children[0] ? starfieldGroup.children[0].geometry.attributes.position.count : 0,
+                getAnimationLoopState: () => ({ isPageVisible, hasScheduledFrame: !!animationFrameId }),
                 // Phase 07 Performance & Usability APIs
                 getQuality: () => ({
                     level: QualityManager.level,
