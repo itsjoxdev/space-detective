@@ -223,6 +223,35 @@ This implementation roadmap outlines the structured, milestone-driven execution 
 
 ---
 
+### Mobile Responsiveness Fix — Gameplay Next Button Visibility (Completed & Verified)
+- **Problem Statement & Bug Report:**
+  - On mobile devices (in mobile mode without "Desktop Site" forced), after answering a question, the feedback dialog appeared, but the **Next Question** button was clipped off or completely unreachable, creating a critical gameplay blocker.
+- **Root Cause Analysis (Multi-Factor):**
+  1. **Confined Containing Block:** The `#feedback-overlay` was originally nested inside `.scanner-image-viewport` which had a fixed/clamped height (`height: clamp(140px, 24vh, 190px)` on mobile) and `overflow: hidden`. The feedback content (header + explanation + source link + next button) required 280–350px, causing the Next Question button to be clipped off by the parent viewport's `overflow: hidden`.
+  2. **Transform Containing Block Trap:** When attempting to position `.feedback-overlay` with `position: fixed` while nested inside `#screen-gameplay`, its animated parent `.screen-view` had CSS transforms applied (`transform: matrix(1, 0, 0, 1, 0, 0)`). Under the CSS Transforms Module specification, any non-`none` transform creates a new containing block for `position: fixed` descendants. Because `#screen-gameplay` starts below the 95px header bar, the overlay was shifted down by 95px, pushing its bottom and the button below the screen edge (`bottom: 663px` vs viewport `568px`).
+  3. **Unconstrained Flex Growth:** Without explicit scroll area constraints (`flex: 1; min-height: 0; overflow-y: auto`), long Arabic explanation texts pushed non-scrollable siblings outside compact viewport heights (such as 320×568 and 844×390 landscape).
+- **Architecture & Implementation Fixes:**
+  - **DOM Relocation:** Moved `<div class="feedback-overlay" id="feedback-overlay">` outside of `#ui-layer` and `.screen-view` as a direct child of `<body>` (sibling to `#reset-modal-overlay` and `#audio-settings-modal`), eliminating any transform containing block traps and ensuring `position: fixed; inset: 0` maps directly to the genuine browser viewport.
+  - **Card/Modal Architecture:** Structured the overlay as a full-screen dimmed backdrop (`.feedback-overlay`) containing a floating glassmorphic card (`.feedback-card`) with max dimensions `max-height: calc(100vh - 1.2rem); max-height: calc(100dvh - 1.2rem);` and `box-sizing: border-box`.
+  - **Scrollable Explanation Body:** Formatted `.feedback-body` with `flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;`, ensuring long educational descriptions scroll internally without expanding the dialog.
+  - **Anchored Action Area:** Pinned `.btn-next-question` inside `.feedback-actions` with `flex-shrink: 0; width: 100%` and touch target heights compliant with child-friendly ergonomics (`58px` desktop, `52px` mobile, `48px` ultra-compact 320px, `44px` landscape).
+  - **Lifecycle Cleanup:** Updated `showScreen()` and `finishPlanetMission()` to automatically hide `#feedback-overlay` when navigating away from gameplay.
+- **Key Deliverables & Verification Evidence:**
+  - Automated CDP verification suite: `scratch/verify_mobile_feedback.js` (9/9 viewports passing, 0 failures).
+  - Clean regression run: `scratch/run_closure_with_server.js` (15/15 regression steps passed, 0 console errors).
+  - Visual verification screenshots:
+    - `scratch/mobile_feedback_correct_390x844.png` (Correct answer feedback modal on standard mobile).
+    - `scratch/mobile_feedback_incorrect_390x844.png` (Supportive explanation feedback modal on standard mobile).
+    - `scratch/mobile_feedback_landscape_844x390.png` (Compact feedback modal in mobile landscape mode).
+- **Acceptance Criteria & Results:**
+  - [x] 100% visible and reachable Next Question button across all 7 mobile viewports (320×568, 375×667, 390×844, 412×915, 430×932, 844×390 landscape, 768×1024 tablet) and 2 desktop viewports (1366×768, 1920×1080).
+  - [x] Zero "Desktop Site" mode required; genuine mobile viewport rendering validated.
+  - [x] Touch target height `>= 44px` verified on all devices (44px–64px).
+  - [x] `document.elementFromPoint` confirms the button is top-most and never obscured by overlays or header bars.
+  - [x] Full gameplay loop verified: Correct answer -> Feedback -> Next question transition -> Supportive answer -> Feedback -> Mission completion.
+
+---
+
 ### Phase 08: Final Polish, Performance Profiling & Delivery
 - **Objectives:**
   - Perform full end-to-end playtesting of the entire detective journey.
