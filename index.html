@@ -2652,7 +2652,7 @@
                         source: {
                             name: "Wikimedia Commons (AI Generated)",
                             pageUrl: "https://commons.wikimedia.org/wiki/File:A_woman_in_glasses_holding_a_book_picks_a_glowing_red_apple_from_a_tree.png",
-                            creator: "Cameron Butler (Generative AI)",
+                            creator: "Cameron Butler (DALL-E AI)",
                             license: "Public Domain"
                         }
                     },
@@ -2680,7 +2680,7 @@
                         source: {
                             name: "Wikimedia Commons (AI Generated)",
                             pageUrl: "https://commons.wikimedia.org/wiki/File:Solarpunk,_a_positive_possible_near-future.jpg",
-                            creator: "Prototyperspective (Generative AI)",
+                            creator: "Prototyperspective (Stable Diffusion AI)",
                             license: "CC0 / Public Domain"
                         }
                     },
@@ -2782,7 +2782,7 @@
                         source: {
                             name: "Wikimedia Commons (AI Generated)",
                             pageUrl: "https://commons.wikimedia.org/wiki/File:ChimpanziniBananini.webp",
-                            creator: "Generative AI Web Art",
+                            creator: "Bedivere (Uploader) / Generative AI",
                             license: "Public Domain"
                         }
                     },
@@ -2810,7 +2810,7 @@
                         source: {
                             name: "Wikimedia Commons (AI Generated)",
                             pageUrl: "https://commons.wikimedia.org/wiki/File:Fuochi_fatui_in_una_foresta.png",
-                            creator: "AI-generated Artwork",
+                            creator: "Salnitrum (Canva Magic Media AI)",
                             license: "Public Domain"
                         }
                     }
@@ -5337,6 +5337,7 @@
                 getEngine: () => QuestionEngine,
                 getState: () => GameState,
                 getProgression: () => ProgressionManager.getState(),
+                getProgressionManager: () => ProgressionManager,
                 resetProgress: () => ProgressionManager.resetProgress(),
                 recordMissionResult: (pid, c, t) => ProgressionManager.recordMissionResult(pid, c, t),
                 calculateStars: (c, t) => ProgressionManager.calculateStars(c, t),

@@ -1,0 +1,211 @@
+{
+  "timestamp": "2026-11-22T13:04:10.925Z",
+  "testResults": {
+    "gameplaySteps": [
+      {
+        "step": "Step 01 - Welcome Screen",
+        "status": "PASS",
+        "details": {
+          "active": true,
+          "dir": "rtl",
+          "audioAutoplayPrevented": true,
+          "btnStartVisible": true
+        }
+      },
+      {
+        "step": "Step 02 - Planet Selection",
+        "status": "PASS",
+        "details": {
+          "active": true,
+          "moonUnlocked": true,
+          "colorUnlocked": false,
+          "galaxyUnlocked": false,
+          "backBtnVisible": true
+        }
+      },
+      {
+        "step": "Step 03 - Mission Intro (Moon)",
+        "status": "PASS",
+        "details": {
+          "active": true,
+          "badge": "كوكب القمر"
+        }
+      },
+      {
+        "step": "Step 05 - Moon Completion & Unlock Colorful",
+        "status": "PASS",
+        "details": {
+          "active": true,
+          "moonStars": 3,
+          "colorUnlocked": true,
+          "btnNextPlanetVisible": true,
+          "btnNextPlanetTarget": "colorful"
+        }
+      },
+      {
+        "step": "Step 08 - Colorful Completion & Unlock Galaxy",
+        "status": "PASS",
+        "details": {
+          "active": true,
+          "colorfulStars": 3,
+          "galaxyUnlocked": true,
+          "btnNextPlanetVisible": true
+        }
+      },
+      {
+        "step": "Step 11 - Final Game Completion",
+        "status": "PASS",
+        "details": {
+          "active": true,
+          "totalStars": 9,
+          "isCompleted": true,
+          "bannerVisible": true,
+          "bannerText": "🏆 وسام محقق المجرة الأكبر! مبروك! لقد أكملت بنجاح جميع كواكب الفضاء وأصبحت خبيراً في كشف صور الذكاء الاصطناعي!"
+        }
+      },
+      {
+        "step": "Step 14 - Progression Persistence across Reload",
+        "status": "PASS",
+        "details": {
+          "moonUnlocked": true,
+          "colorUnlocked": true,
+          "galaxyUnlocked": true,
+          "totalStars": 9,
+          "isCompleted": true
+        }
+      },
+      {
+        "step": "Step 16 - Reset Progress Modal & Execution",
+        "status": "PASS",
+        "details": {
+          "totalStars": 0,
+          "colorUnlocked": false,
+          "galaxyUnlocked": false,
+          "audioSettingsStillExist": true
+        }
+      }
+    ],
+    "viewportsTested": [
+      {
+        "profile": "Small Mobile",
+        "size": "320x568",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Compact Mobile",
+        "size": "360x800",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "iPhone SE",
+        "size": "375x667",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Standard Mobile",
+        "size": "390x844",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Android Mobile",
+        "size": "412x915",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Large Mobile",
+        "size": "430x932",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Mobile Landscape",
+        "size": "844x390",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Tablet",
+        "size": "768x1024",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Laptop",
+        "size": "1366x768",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      },
+      {
+        "profile": "Desktop",
+        "size": "1920x1080",
+        "hasOverflow": false,
+        "starsDropped": false,
+        "touchTargetsPass": true,
+        "audioSize": 44,
+        "passed": true
+      }
+    ],
+    "performanceMetrics": {
+      "three": {
+        "calls": 36,
+        "triangles": 19512,
+        "geometries": 29,
+        "textures": 5,
+        "dpr": 1
+      },
+      "fps": {
+        "frames": 172,
+        "elapsedSeconds": "3.01",
+        "avgFps": "57.1",
+        "avgFrameTimeMs": "17.50",
+        "onePercentLowFps": "33.9"
+      },
+      "quality": {
+        "highStars": 1300,
+        "medStars": 750,
+        "lowStars": 400
+      }
+    },
+    "audioVerification": {
+      "mutedBefore": true,
+      "unmutedAfter": true,
+      "storedVolume": 0.5,
+      "storedSfx": false
+    },
+    "securityChecks": {}
+  },
+  "consoleErrorsCount": 0,
+  "consoleErrors": []
+}
