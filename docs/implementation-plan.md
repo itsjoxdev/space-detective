@@ -252,6 +252,45 @@ This implementation roadmap outlines the structured, milestone-driven execution 
 
 ---
 
+### Final UI Polish — Responsive Top HUD & Professional Icon System (Completed & Verified)
+- **Objectives:**
+  - Redesign and optimize the persistent top HUD navigation toolbar (`.header-bar`) for seamless responsive layout across all 7 target viewports (320×568, 360×800, 375×667, 390×844, 412×915, 430×932, 844×390 mobile landscape).
+  - Eliminate awkward wrapping, overlapping, clipping, and the bug where the star counter badge dropped alone to an unintended lower row on mobile screens.
+  - Enforce touch target standards (`>= 44×44px`) across all interactive toolbar and modal controls.
+  - Replace emoji-based UI icons across the entire visible interface with consistent, professional, lightweight inline SVG outline icons (`stroke="currentColor"`, `stroke-width="2"`, `viewBox="0 0 24 24"`, `stroke-linecap="round" stroke-linejoin="round"`).
+  - Preserve Arabic RTL alignment, safe-area insets, and single-file architecture without adding external font or CSS dependencies.
+- **Architectural & Design Implementation:**
+  1. **Mobile-First Responsive Top HUD:**
+     - Restructured `.header-bar` to maintain a single row across all mobile viewports down to 320px width without wrapping or horizontal overflow (`scrollWidth <= innerWidth`).
+     - Added `.brand-badge` flex clamping (`min-width: 0`, `flex-shrink: 1`) and truncated title (`white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px` on `<= 360px`).
+     - Automatically hide non-essential button text labels (`.btn-reset-text`, `.nav-back-text`) and desktop subtitle on mobile screens (`<= 768px`), converting action buttons into compact circular touch targets.
+     - Enforced strict `>= 44×44px` touch ergonomics: `.btn-audio-toggle`, `.btn-reset-progress`, and `.btn-nav-back` are guaranteed `width: 44px; height: 44px; min-width: 44px; min-height: 44px`.
+     - Standardized `.header-stars-badge` as an aligned, fixed-height pill badge (`height: 44px; min-height: 44px; padding: 0 0.65rem`), remaining locked on the exact same row as the brand logo and action buttons (`top: 5px` to `49px`).
+  2. **Unified Inline SVG Icon System:**
+     - Created a 24-icon dictionary (`ICONS`) directly inlined within `index.html` with zero external dependencies.
+     - Icons implemented: `rocket` (brand logo & launch missions), `star` & `starEmpty` (progression counter & completion rewards), `volume` & `volumeMute` (audio controls & quick mute), `refresh` (restart journey & replay), `arrowBack` (RTL back navigation pointing right `→`), `arrowNext` (RTL forward navigation pointing left `←`), `robot` (Cosmo dialogue mascot avatars), `camera` (real photo answer), `sparkles` (AI generated answer & SFX toggle), `trophy` (mission completion honor badge), `lock` & `unlock` (planet status indicators), `search` (question header strip), `lightbulb` (supportive feedback), `check` (level completed pill), `close` (modal dismiss button), `planet`, `moon`, `ringed`, `galaxy` (planet celestial tags and cards), `speech` (Arabic voice narration toggle), and `alert` (WebGL fallback notification).
+     - Applied `pointer-events: none` on `.ui-icon` to avoid event target interception during touch and click delegation.
+- **Key Deliverables & Verification Evidence:**
+  - Automated Toolbar Diagnostics Script: `scratch/diagnose_toolbar.js` (7/7 viewports passing, 0 horizontal scroll, 0 star counter drops, all buttons `>= 44×44px`).
+  - Automated Mobile Feedback Suite: `scratch/verify_mobile_feedback.js` (9/9 viewports passing, 0 regressions).
+  - Automated Diagnostics Validator: `scratch/validate_diagnostics.js` (0 CSS syntax errors via AST parser, 0 JS errors via V8 compiler).
+  - Phase 07 Closure Suite: `scratch/run_closure_with_server.js` (15/15 regression steps passed, 0 console errors, 0 memory leaks).
+  - Visual Evidence Screenshots:
+    - `scratch/hud_top_polish_320x568.png` (Top HUD on ultra-compact 320px viewport).
+    - `scratch/hud_top_polish_375x667.png` (Top HUD on iPhone SE 375px viewport).
+    - `scratch/hud_top_polish_390x844.png` (Top HUD on standard 390px viewport).
+- **Acceptance Criteria & Results:**
+  - [x] Top HUD fits comfortably on a single row across all 7 target viewports (320px, 360px, 375px, 390px, 412px, 430px, 844px landscape).
+  - [x] Star counter badge (`#header-stars-badge`) remains prominently visible and cleanly aligned on the toolbar without dropping down.
+  - [x] All interactive buttons (`btn-audio-toggle`, `btn-reset-progress`, `btn-back-global`) meet `>= 44×44px` touch ergonomics.
+  - [x] Zero horizontal overflow verified across all screens (`docScrollWidth <= window.innerWidth`).
+  - [x] All interface emojis replaced with cohesive inline SVG outline icons.
+  - [x] Directional arrows correctly respect Arabic RTL flow.
+  - [x] Single-file architecture preserved inside `index.html`.
+  - [x] Zero regressions across all Phases 01–07 functionality.
+
+---
+
 ### Phase 08: Final Polish, Performance Profiling & Delivery
 - **Objectives:**
   - Perform full end-to-end playtesting of the entire detective journey.
